@@ -1,0 +1,33 @@
+/*<style>*/
+@import url('https://fonts.googleapis.com/css?family=Roboto:300');
+/*</style> */
+*{
+    text-align: justify;
+    font-family: 'Roboto', sans-serif;
+}
+body {
+    padding-top: 65px;
+    background-color: #FFFFFF;
+}
+nav li:hover{
+     box-shadow:0px -3px 0px 0px #EF7500 inset;
+     transition: box-shadow 0.2s ease-in-out;
+}
+nav a{
+    font-size: 14px;
+}
+.navbar-default {
+    background: white;
+    border-color: #E7E7E7;
+    /*margin: 10px;*/
+}
+@media (max-width: 208px) {
+    .navbar-brand{
+        display: none;
+    }
+}
+.elevated{
+    box-shadow: 0px 5px 10px 0px #FAFAFA;
+    margin-top: 10px;
+    border-bottom: 3px solid #F5F5F5
+}
