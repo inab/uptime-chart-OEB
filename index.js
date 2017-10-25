@@ -34,22 +34,46 @@ function scriptLoadHandler() {
     main();
 }
 
+
+
+function createElements(){
+    document.createElement('rect');
+    document.createElement('opeb');
+    document.createElement('opeb-widget');
+    document.createElement('opeb-widget-tooltip');
+}
+
+function css(){
+    var widgetStyle = document.createElement('style');
+    widgetStyle.innerHTML =
+    'opeb{ border: 1px solid black;display:block;width:300px; height:150px; margin:10px;} opeb-widget{ width:100px; height:100px; display:flex; flex-direction:column;  flex-wrap:wrap; align-content: flex-start;} rect{width:25px;height:25px;display:block;background-color:pink; } rect:hover{opacity:.5} opeb-widget-tooltip{border:1px solid red; display:block}';
+    return widgetStyle;
+}
+
+function buildTooltip(data){
+    var tooltip =
+    "<opeb-widget-tooltip><p>Desc : "+data.project.description+"<p><p>Publications: "+data.project.publications+"<p><p>operational: "+data.project.website.operational+"<p><p>Support: "+data.support.email+"<p></opeb-widget-tooltip>"
+    return tooltip
+}
+
+
+function palette(min, max) {
+    var d = (max-min)/10;
+    return d3.scale.threshold()
+        .range(['#ff8c00','#ee7d29','#dc6d3b','#cb5e49','#b94f55','#a6405f','#933168','#7e2271','#67127a','#4b0082'])
+        .domain([min+1*d,min+2*d,min+3*d,min+4*d,min+5*d,min+6*d,min+7*d,min+8*d,min+9*d,min+10*d]);
+}
 /******** Our main function ********/
 function main() {
     jQuery(document).ready(function($) {
         /******* Creating dom elements *******/
-        document.createElement('rect');
-        document.createElement('opeb');
-        document.createElement('opeb-widget');
-        document.createElement('opeb-widget-tooltip');
-        /******* Load CSS *******/
-        var widgetStyle = document.createElement('style');
-        widgetStyle.innerHTML =
-        'opeb{ border: 1px solid black;display:block;width:300px; height:150px; margin:10px;} opeb-widget{ width:100px; height:100px; display:flex; flex-direction:column;  flex-wrap:wrap; align-content: flex-start;} rect{width:25px;height:25px;display:block;background-color:pink; } rect:hover{opacity:.5} opeb-widget-tooltip{width:100px; height:100px;border:1px solid red; display:block}';
+        createElements();
 
-        $('head').append(widgetStyle);
+        /******* Load CSS *******/
+        css();
 
         /******* Load HTML *******/
+        $('head').append( css());
         var jsonp_url = $("opeb").attr("data-widgetService");
         $.getJSON(jsonp_url, function(data) {
             console.log(data);
@@ -57,15 +81,14 @@ function main() {
             for (var i = 0; i <= 15; i++) {
                 $("opeb-widget").append("<rect data-widget-text="+i+" >"+i+"</rect>")
             }
-            // $("opeb").append("")
-            $("opeb-widget").hover(function (){
-                $(this).append("<opeb-widget-tooltip><a href="+data.homepage+">link</a><h1>hola<h1></opeb-widget-tooltip>");
+            $("opeb-widget").hover( function(){
+                $(this).append(buildTooltip(data));
             },function(){
                 $("opeb-widget-tooltip").remove();
             })
-            // $('opeb-widget').attr('title',data["@type"].toUpperCase()+"\n<a href="+data.homepage+"></a>");
         });
     });
 }
+
 
 })(); // We call our anonymous function immediately
