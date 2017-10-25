@@ -46,7 +46,7 @@ function createElements(){
 function css(){
     var widgetStyle = document.createElement('style');
     widgetStyle.innerHTML =
-    'opeb{ border: 1px solid black;display:block;width:300px; height:150px; margin:10px;} opeb-widget{ width:100px; height:100px; display:flex; flex-direction:column;  flex-wrap:wrap; align-content: flex-start;} rect{width:25px;height:25px;display:block;background-color:pink; } rect:hover{opacity:.5} opeb-widget-tooltip{border:1px solid red; display:block}';
+    'opeb{display:flex; } opeb-widget{ width:100px; height:100px; display:flex; flex-direction:column;  flex-wrap:wrap; align-content: flex-start;  border-radius: 25px; overflow:visable} rect{width:25px;height:25px;display:block;background-color:pink; } rect:hover{opacity:.5} opeb-widget-tooltip{ display: flex; padding:0;margin:0; z-index:100; min-width: 200px;  flex-direction:row;}';
     return widgetStyle;
 }
 
@@ -77,9 +77,10 @@ function main() {
         var jsonp_url = $("opeb").attr("data-widgetService");
         $.getJSON(jsonp_url, function(data) {
             console.log(data);
+            var colorArray = ['#ff8c00','#fa8813','#f5831e','#f07f26','#eb7a2c','#e67632','#e17137','#dc6d3c','#d76940','#d26444','#cd6048','#c85b4c','#c2574f','#bd5252','#b74e56','#b34a59','#ad455b','#a8415f','#a23d61','#9d3864','#973467','#913069','#8c2b6c','#85276e','#7f2271','#791d74','#721976','#6c1478','#640f7b','#5d0a7d','#540480','#4b0082'];
             $("opeb").append("<opeb-widget ></opeb-widget>");
             for (var i = 0; i <= 15; i++) {
-                $("opeb-widget").append("<rect data-widget-text="+i+" >"+i+"</rect>")
+                $("opeb-widget").append("<rect data-widget-text="+i+" style=background-color:"+colorArray[Math.floor((Math.random() * 16) +1)]+";></rect>")
             }
             $("opeb-widget").hover( function(){
                 $(this).append(buildTooltip(data));
