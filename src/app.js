@@ -18,6 +18,7 @@ function genChartData(citations,chartName){
     const xsData = {};
     
     for(const i of citations){
+        
         for(const y of i.found_pubs){
             const temp = {};
             const max = new Date().getFullYear();
@@ -25,13 +26,14 @@ function genChartData(citations,chartName){
             for(min; min<=max; min++){
                 temp[min]=0;
             }
-            const pmid = i.pmid;
+            const title = y.title;
+            const pmid = y.pmid;
             const citation_count = y.citation_count;
             const citation_stats_temp = y.citation_stats;
             const citation_stats = Object.assign(temp,citation_stats_temp);
             const years = Object.keys(citation_stats);
             const count = Object.values(citation_stats);
-            const key = pmid+' ('+citation_count+')'
+            const key = title+' PMID: '+pmid+' ('+citation_count+')'
             count.unshift(key);
             years.unshift(key+'y');
             columsData.push(years,count);
@@ -70,6 +72,9 @@ function populateChart(columsData,xsData,chartName){
         
     }
     const chart = c3.generate({
+        size: {
+            height: 480,
+        },
         data: {
             xs:xsData,
                 columns: columsData,
