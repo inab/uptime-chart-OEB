@@ -13,16 +13,16 @@ async function fetchUrl(url) {
         console.log(`Error: ${err.stack}`);
     }
 }
-function genChartData(citations,chartName){
+function genChartData(citations,chartName,title,dataH,fullName){
     const columsData = [];
     const xsData = {};
     
     for(const i of citations){
-        
         for(const y of i.found_pubs){
             const temp = {};
             const max = new Date().getFullYear();
             let min = y.year;
+            // console.log(Object.keys(y.citation_stats)[0]);
             for(min; min<=max; min++){
                 temp[min]=0;
             }
@@ -33,14 +33,17 @@ function genChartData(citations,chartName){
             const citation_stats = Object.assign(temp,citation_stats_temp);
             const years = Object.keys(citation_stats);
             const count = Object.values(citation_stats);
-            const key = title+' PMID: '+pmid+' ('+citation_count+')'
+            let key = 'PMID: '+pmid+' ('+citation_count+')';
+            if(fullName=="true"){
+                key = title+' PMID: '+pmid+' ('+citation_count+')';
+            };
             count.unshift(key);
             years.unshift(key+'y');
             columsData.push(years,count);
             xsData[key]=key+'y';
         }
     }
-    populateChart(columsData,xsData,chartName);
+    populateChart(columsData,xsData,chartName,title,dataH);
 }
 
 
@@ -59,7 +62,7 @@ function genChartData(citations,chartName){
 //     };
 //     populateChart(columsData,chartName,xsData);
 // }
-function populateChart(columsData,xsData,chartName){
+function populateChart(columsData,xsData,chartName,title,dataH){
     const tickOptionsX = {
         
         format: d3.format('d'),
@@ -71,17 +74,29 @@ function populateChart(columsData,xsData,chartName){
         format: function(x) { return x % 1 === 0 ? x : ''; }
         
     }
+    
     const chart = c3.generate({
+        
         size: {
-            height: 480,
+            height: dataH?dataH:480,
+        },
+        title:{
+            text: title,
         },
         data: {
             xs:xsData,
                 columns: columsData,
             },
+            legend: {
+                position: 'bottom',
+            },
             axis: {
                 y:{
                     tick: tickOptionsY,
+                    label: {
+                        text: 'Cites',
+                        position: 'outer-center'
+                    },
                     min: 0,
                     padding: {
                         bottom: 5,
@@ -89,9 +104,17 @@ function populateChart(columsData,xsData,chartName){
                 },
                 x:{
                     tick: tickOptionsX,
+                    label: {
+                        text: 'Years',
+                        position: 'outer-right'
+                    },
+                    padding: {
+                        right: 0.3,
+                    },
                 },
             },
             bindto: '#'+chartName,
+            
             tooltip: {
                 contents: function (d, defaultTitleFormat, defaultValueFormat, color) {
 
@@ -134,15 +157,18 @@ function loadUptimeChart (){
         try{
             const chartName = y.getAttribute('data-name');
             const chartUrl = y.getAttribute('data-id');
+            const title = y.getAttribute('data-title');
+            const dataH = y.getAttribute('data-h');
+            const fullName = y.getAttribute('data-full-name');
             const div = document.createElement("div");
             div.id = chartName;
-            y.appendChild(div)
+            y.appendChild(div);
             const citations = fetchUrl(chartUrl);
             citations.then(function(result) {
-                genChartData(result.entry_pubs,chartName)
+                genChartData(result.entry_pubs,chartName,title,dataH,fullName);
             });
         }catch(err){
-            console.log(err)
+            console.log(err);
         }
     }
 }
