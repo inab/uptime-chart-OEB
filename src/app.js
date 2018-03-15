@@ -94,7 +94,7 @@ function populateChart(columsData,xsData,chartName,title,dataH){
                 y:{
                     tick: tickOptionsY,
                     label: {
-                        text: 'Cites',
+                        text: 'Citations',
                         position: 'outer-center'
                     },
                     min: 0,
@@ -105,7 +105,7 @@ function populateChart(columsData,xsData,chartName,title,dataH){
                 x:{
                     tick: tickOptionsX,
                     label: {
-                        text: 'Years',
+                        text: 'Year',
                         position: 'outer-right'
                     },
                     padding: {
@@ -155,8 +155,8 @@ function loadUptimeChart (){
     const x = document.getElementsByClassName("opebcitations");
     for(let y of x){
         try{
-            const chartName = y.getAttribute('data-name');
-            const chartUrl = y.getAttribute('data-id');
+            const chartName = y.getAttribute('data-id');
+            const chartUrl = y.getAttribute('data-url');
             const title = y.getAttribute('data-title');
             const dataH = y.getAttribute('data-h');
             const fullName = y.getAttribute('data-full-name');
