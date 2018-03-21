@@ -1,6 +1,7 @@
 import * as d3 from 'd3-format';
 import * as c3 from 'c3';
-import * as style from '../node_modules/c3/c3.css';
+import * as style from '../node_modules/c3/c3.css'
+import * as style2 from './app.css';
 
 //./node_modules/.bin/webpack-cli src/app.js --output=build/build.js --module-bind 'css=style-loader!css-loader' -d -w
 
@@ -21,7 +22,7 @@ function genChartData(uptime,chartName){
 
     for(const x of uptime){
         
-        dates.push(x.date.split('T')[0]);
+        dates.push(x.date);
         code.push(x.code);
         ac_time.push(x.access_time);
     }
@@ -36,18 +37,21 @@ function genChartData(uptime,chartName){
 
 function populateChart(dates, code , ac_time,chartName){
     const tickOptionsX = {
-        fit: true,
+        // fit: true,
+        // format: function (x) { return x; },
         // format: "%e %b %y",
+        rotate: 60,
         outer: false,
     }
     const tickOptionsY = {
         outer: false,
-        format: function(x) { return x % 1 === 0 ? x : ''; }
+        tooltip:false,
+        format: function(x) { console.log(x); return x % 1 === 0 ? x : ''; }
         
     }
     const tickOptionsY2 = {
         outer: false,
-        format: d3.format('d'),
+        // format: function(x) { console.log(x); return x % 1 === 0 ? x : ''; }
     }
     const chart = c3.generate({
         data: {
@@ -59,7 +63,7 @@ function populateChart(dates, code , ac_time,chartName){
             ],
             types:{
                 'Access Time': 'line',
-                'Status': 'scatter',
+                'Status': 'line',
             },
             axes:{
                 'Status': 'y',
@@ -68,16 +72,16 @@ function populateChart(dates, code , ac_time,chartName){
         },
         axis: {
             y2:{
-                show: false,
+                // show: false,
                 tick: tickOptionsY2,
                 inverted: false,
                 
             },
             y:{
-                show: false,
+                // show: false,
                 tick: tickOptionsY,
                 min:0,
-                max:400,
+                
                 inverted:true,
                 padding:{
                     bottom:0,
@@ -85,7 +89,8 @@ function populateChart(dates, code , ac_time,chartName){
             },
             
             x:{
-                type : 'timeseries',
+                type : 'category',
+                // categories:dates,
                 tick: tickOptionsX,
             },
             
@@ -93,13 +98,15 @@ function populateChart(dates, code , ac_time,chartName){
         grid: {
             y: {
                 lines: [
-                    {value: 400, text: 'offline', axis:'y'},
-                    {value: 200, text: 'online', axis:'y'},
+                    {value: 400, text: 'offline', axis:'y', class: 'gridonline'},
+                    {value: 200, text: 'online', axis:'y', class: 'gridonline'},
                 ]
             },
         },
         zoom: {
-            enabled: true
+            enabled: true,
+            // rescale: true,
+
         },
         point:{
             show:false,
@@ -110,7 +117,7 @@ function populateChart(dates, code , ac_time,chartName){
         bindto: '#'+chartName,
         tooltip: {
             contents: function (d, defaultTitleFormat, defaultValueFormat, color) {
-                // console.log(d)
+                console.log(d)
                 let $$ = this, config = $$.config,
                     
                     titleFormat = config.tooltip_format_title || defaultTitleFormat,
@@ -118,36 +125,33 @@ function populateChart(dates, code , ac_time,chartName){
                     valueFormat = config.tooltip_format_value || defaultValueFormat,
                     text, i, title, value, name, bgcolor, total=0;
                 
-                for (i of d){
-                    console.log(i);
+                for (i = 0; i < d.length; i++) {
+                    total = total+d[i].value;
+                    if (! (d[i] && (d[i].value || d[i].value === 0))) { continue; }
+
+                    if (! text) {
+                        title = titleFormat ? titleFormat(d[i].x) : d[i].x;
+                        text = "<table class='" + $$.CLASS.tooltip + "'>" + (title || title === 0 ? "<tr><th colspan='2'>" + title + "</th></tr>" : "");
+                    }
+
+                    
+                    name = nameFormat(d[i].name,d[i].ratio, d[i].id, d[i].index);
+                    value = valueFormat(d[i].value, d[i].ratio, d[i].id, d[i].index);
+                    // console.log(value)
+                    bgcolor = $$.levelColor ? $$.levelColor(d[i].value) : color(d[i].id);
+                    
+                    text += "<tr class='" + $$.CLASS.tooltipName + "-" + d[i].id + "'>";
+                    text += "<td class='name'><span style='background-color:" + bgcolor + "'></span>" + name + "</td>";
+                    text += "<td class='value'>" + value + "</td>";
+                    text += "</tr>";
                 }
-                // for (i = 0; i < d.length; i++) {
-                //     total = total+d[i].value;
-                //     if (! (d[i] && (d[i].value || d[i].value === 0))) { continue; }
-
-                //     if (! text) {
-                //         title = titleFormat ? titleFormat(d[i].x) : d[i].x;
-                //         text = "<table class='" + $$.CLASS.tooltip + "'>" + (title || title === 0 ? "<tr><th colspan='2'>" + title + "</th></tr>" : "");
-                //     }
-
-                    
-                //     name = nameFormat(d[i].name,d[i].ratio, d[i].id, d[i].index);
-                //     value = valueFormat(d[i].value, d[i].ratio, d[i].id, d[i].index);
-                //     console.log(value)
-                //     bgcolor = $$.levelColor ? $$.levelColor(d[i].value) : color(d[i].id);
-                    
-                //     text += "<tr class='" + $$.CLASS.tooltipName + "-" + d[i].id + "'>";
-                //     text += "<td class='name'><span style='background-color:" + bgcolor + "'></span>" + name + "</td>";
-                //     text += "<td class='value'>" + value + "</td>";
-                //     text += "</tr>";
-                // }
-                // // text += "<tr class='" + $$.CLASS.tooltipName +"'>";
-                // // text += "<td class='name'> Total </td>";
-                // // text += "<td class='value'>" + total + "</td>";
-                // // text += "</tr>";
-                // return text + "</table>";
+                // text += "<tr class='" + $$.CLASS.tooltipName +"'>";
+                // text += "<td class='name'> Total </td>";
+                // text += "<td class='value'>" + total + "</td>";
+                // text += "</tr>";
+                return text + "</table>";
             },  
-}
+        }
             
     });
 }
