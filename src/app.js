@@ -1,7 +1,7 @@
 import * as d3 from 'd3-format';
 import * as c3 from 'c3';
-import * as style from '../node_modules/c3/c3.css'
-import * as style2 from './app.css';
+import '../node_modules/c3/c3.css'
+import './app.css';
 
 //./node_modules/.bin/webpack-cli src/app.js --output=build/build.js --module-bind 'css=style-loader!css-loader' -d -w
 
@@ -21,15 +21,14 @@ function genChartData(uptime,chartName){
     const ac_time = [];
 
     for(const x of uptime){
-        
-        dates.push(x.date);
+        const date = x.date.split('.')[0].replace('T',' ').replace(/-/g, ".");
+        dates.push(date);
         code.push(x.code);
         ac_time.push(x.access_time);
     }
     dates.unshift('dates');
     code.unshift('Status');
     ac_time.unshift('Access Time');
-    console.log(dates, code , ac_time);
    populateChart(dates, code , ac_time , chartName)
 }
 
@@ -37,16 +36,13 @@ function genChartData(uptime,chartName){
 
 function populateChart(dates, code , ac_time,chartName){
     const tickOptionsX = {
-        // fit: true,
-        // format: function (x) { return x; },
-        // format: "%e %b %y",
-        rotate: 60,
+        rotate: 50,
+        multiline: false,
         outer: false,
     }
     const tickOptionsY = {
         outer: false,
         tooltip:false,
-        format: function(x) { console.log(x); return x % 1 === 0 ? x : ''; }
         
     }
     const tickOptionsY2 = {
@@ -56,6 +52,7 @@ function populateChart(dates, code , ac_time,chartName){
     const chart = c3.generate({
         data: {
             x:'dates',
+            
             columns:[
                 dates,
                 code,
@@ -70,15 +67,16 @@ function populateChart(dates, code , ac_time,chartName){
                 'Access Time': 'y2',
             },
         },
+        
         axis: {
             y2:{
-                // show: false,
+                show: false,
                 tick: tickOptionsY2,
                 inverted: false,
                 
             },
             y:{
-                // show: false,
+                show: false,
                 tick: tickOptionsY,
                 min:0,
                 
@@ -89,9 +87,9 @@ function populateChart(dates, code , ac_time,chartName){
             },
             
             x:{
-                type : 'category',
-                // categories:dates,
+                type : 'categories',
                 tick: tickOptionsX,
+                extent: [dates.length-15, dates.length]
             },
             
         },
@@ -105,8 +103,7 @@ function populateChart(dates, code , ac_time,chartName){
         },
         zoom: {
             enabled: true,
-            // rescale: true,
-
+            rescale: false,
         },
         point:{
             show:false,
@@ -114,10 +111,19 @@ function populateChart(dates, code , ac_time,chartName){
         subchart: {
             show: false,
         },
+        // padding:{
+        //     top:40,
+            
+        // },
+        legend: {
+            position: 'right',
+            
+        
+        },
         bindto: '#'+chartName,
         tooltip: {
             contents: function (d, defaultTitleFormat, defaultValueFormat, color) {
-                console.log(d)
+                // console.log(d)
                 let $$ = this, config = $$.config,
                     
                     titleFormat = config.tooltip_format_title || defaultTitleFormat,
@@ -142,13 +148,22 @@ function populateChart(dates, code , ac_time,chartName){
                     
                     text += "<tr class='" + $$.CLASS.tooltipName + "-" + d[i].id + "'>";
                     text += "<td class='name'><span style='background-color:" + bgcolor + "'></span>" + name + "</td>";
-                    text += "<td class='value'>" + value + "</td>";
+                    
+                    if(name == 'Access Time'){
+                        text += "<td class='value'>" + value +"ms </td>";
+                    }else{
+                        if (value == 200){
+                            text += "<td class='value'> Online </td>";
+                        } else if(value == 400 ) {
+                            text += "<td class='value'> Offline </td>";
+                        } else {
+                            text += "<td class='value'>" + value +"</td>";
+                        }
+                        
+                    }
+                    
                     text += "</tr>";
                 }
-                // text += "<tr class='" + $$.CLASS.tooltipName +"'>";
-                // text += "<td class='name'> Total </td>";
-                // text += "<td class='value'>" + total + "</td>";
-                // text += "</tr>";
                 return text + "</table>";
             },  
         }
