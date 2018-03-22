@@ -15,7 +15,7 @@ async function fetchUrl(url) {
         console.log(`Error: ${err.stack}`);
     }
 }
-function genChartData(uptime,chartName){
+function genChartData(uptime,chartName,xaxis){
     const dates = [];
     const code = [];
     const ac_time = [];
@@ -29,12 +29,13 @@ function genChartData(uptime,chartName){
     dates.unshift('dates');
     code.unshift('Status');
     ac_time.unshift('Access Time');
-   populateChart(dates, code , ac_time , chartName)
+   populateChart(dates, code , ac_time , chartName,xaxis)
 }
 
 
 
-function populateChart(dates, code , ac_time,chartName){
+function populateChart(dates, code , ac_time,chartName,xaxis){
+    
     const tickOptionsX = {
         rotate: 50,
         multiline: false,
@@ -49,6 +50,7 @@ function populateChart(dates, code , ac_time,chartName){
         outer: false,
         // format: function(x) { console.log(x); return x % 1 === 0 ? x : ''; }
     }
+    // console.log(xaxis)
     const chart = c3.generate({
         data: {
             x:'dates',
@@ -87,9 +89,11 @@ function populateChart(dates, code , ac_time,chartName){
             },
             
             x:{
+                
                 type : 'categories',
                 tick: tickOptionsX,
-                extent: [dates.length-15, dates.length]
+                extent: [dates.length-15, dates.length],
+                show: xaxis == 'true' ? 1:0,
             },
             
         },
@@ -117,8 +121,6 @@ function populateChart(dates, code , ac_time,chartName){
         // },
         legend: {
             position: 'right',
-            
-        
         },
         bindto: '#'+chartName,
         tooltip: {
@@ -177,13 +179,14 @@ function loadChart (){
         try{
             const chartName = y.getAttribute('data-id');
             const chartUrl = y.getAttribute('data-url');
+            const xaxis = y.getAttribute('data-xaxis');
             const div = document.createElement("div");
             div.id = chartName;
             y.appendChild(div)
             const upitme = fetchUrl(chartUrl);
             
             upitme.then(function(result) {
-                genChartData(result,chartName)
+                genChartData(result,chartName,xaxis)
                 
             });
         }catch(err){
