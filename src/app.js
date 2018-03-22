@@ -120,7 +120,7 @@ function populateChart(dates, code , ac_time,chartName,xaxis){
             
         // },
         legend: {
-            position: 'right',
+            position: xaxis == 'true' ? 'right':'',
         },
         bindto: '#'+chartName,
         tooltip: {
