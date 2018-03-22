@@ -15,7 +15,7 @@ async function fetchUrl(url) {
         console.log(`Error: ${err.stack}`);
     }
 }
-function genChartData(uptime,chartName,xaxis){
+function genChartData(uptime,chartName,xaxis,c_w,c_h){
     const dates = [];
     const code = [];
     const ac_time = [];
@@ -29,12 +29,12 @@ function genChartData(uptime,chartName,xaxis){
     dates.unshift('dates');
     code.unshift('Status');
     ac_time.unshift('Access Time');
-   populateChart(dates, code , ac_time , chartName,xaxis)
+   populateChart(dates, code , ac_time , chartName,xaxis,c_w,c_h)
 }
 
 
 
-function populateChart(dates, code , ac_time,chartName,xaxis){
+function populateChart(dates, code , ac_time,chartName,xaxis,c_w,c_h){
     
     const tickOptionsX = {
         rotate: 50,
@@ -69,7 +69,10 @@ function populateChart(dates, code , ac_time,chartName,xaxis){
                 'Access Time': 'y2',
             },
         },
-        
+        size: {
+            height: Number(c_h),
+            width: Number(c_w),
+        },
         axis: {
             y2:{
                 show: false,
@@ -180,13 +183,15 @@ function loadChart (){
             const chartName = y.getAttribute('data-id');
             const chartUrl = y.getAttribute('data-url');
             const xaxis = y.getAttribute('data-xaxis');
+            const c_w = y.getAttribute('data-w');
+            const c_h = y.getAttribute('data-h');
             const div = document.createElement("div");
             div.id = chartName;
             y.appendChild(div)
             const upitme = fetchUrl(chartUrl);
             
             upitme.then(function(result) {
-                genChartData(result,chartName,xaxis)
+                genChartData(result,chartName,xaxis,c_w,c_h)
                 
             });
         }catch(err){
