@@ -2,7 +2,7 @@ import * as d3 from 'd3-format';
 import * as c3 from 'c3';
 import '../node_modules/c3/c3.css'
 import './app.css';
-
+import printMe from './test';
 //./node_modules/.bin/webpack-cli src/app.js --output=build/build.js --module-bind 'css=style-loader!css-loader' -d -w
 // function doEverything(){
     async function fetchUrl(url) {
@@ -176,10 +176,16 @@ import './app.css';
         });
     }
     
-export function loadChart (){
+    function loadChart (){
+       
+        console.log(printMe);
         const x = document.getElementsByClassName("opebuptime");
         for(let y of x){
             try{
+                const btn = document.createElement('button');
+                btn.innerHTML = 'Click me and check the console!';
+                btn.onclick = printMe;
+                y.appendChild(btn);
                 const chartName = y.getAttribute('data-id');
                 const chartUrl = y.getAttribute('data-url');
                 const xaxis = y.getAttribute('data-xaxis');
