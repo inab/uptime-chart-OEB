@@ -21,8 +21,8 @@ import printMe from './test';
         const ac_time = [];
     
         for(const x of uptime){
-            const date = x.date.split('.')[0].replace('T',' ').replace(/-/g, ".");
-            dates.push(date);
+            // const date = x.date.split('.')[0].replace('T',' ').replace(/-/g, ".");
+            dates.push(x.date);
             code.push(x.code);
             ac_time.push(x.access_time);
         }
@@ -37,6 +37,7 @@ import printMe from './test';
     function populateChart(dates, code , ac_time,chartName,xaxis,c_w,c_h){
         
         const tickOptionsX = {
+            format: '%m-%d',
             rotate: 50,
             multiline: false,
             outer: false,
@@ -53,6 +54,7 @@ import printMe from './test';
         // console.log(xaxis)
         const chart = c3.generate({
             data: {
+                xFormat: '%Y-%m-%dT%H:%M:%S.%LZ',
                 x:'dates',
                 
                 columns:[
@@ -61,7 +63,7 @@ import printMe from './test';
                     ac_time,
                 ],
                 types:{
-                    'Access Time': 'line',
+                    'Access Time': 'area',
                     'Status': 'line',
                 },
                 axes:{
@@ -75,13 +77,13 @@ import printMe from './test';
             },
             axis: {
                 y2:{
-                    show: false,
+                    show: true,
                     tick: tickOptionsY2,
                     inverted: false,
                     
                 },
                 y:{
-                    show: false,
+                    show: true,
                     tick: tickOptionsY,
                     min:0,
                     
@@ -93,7 +95,7 @@ import printMe from './test';
                 
                 x:{
                     
-                    type : 'categories',
+                    type : 'category',
                     tick: tickOptionsX,
                     extent: [dates.length-15, dates.length],
                     show: xaxis == 'true' ? 1:0,
@@ -176,16 +178,15 @@ import printMe from './test';
         });
     }
     
-    function loadChart (){
+    function loadChart (elems){
        
         console.log(printMe);
-        const x = document.getElementsByClassName("opebuptime");
-        for(let y of x){
+        if(elems===undefined) {
+            elems = document.getElementsByClassName("opebuptime");
+        }
+        for(let y of elems){
             try{
-                const btn = document.createElement('button');
-                btn.innerHTML = 'Click me and check the console!';
-                btn.onclick = printMe;
-                y.appendChild(btn);
+              
                 const chartName = y.getAttribute('data-id');
                 const chartUrl = y.getAttribute('data-url');
                 const xaxis = y.getAttribute('data-xaxis');

@@ -182,7 +182,7 @@
     {
       "date": "2018-02-10T14:35:31.245Z",
       "code": 400,
-      "access_time": 1503
+      "access_time": null
     },
     {
       "date": "2018-02-13T10:46:10.221Z",
@@ -216,18 +216,18 @@
     },
     {
       "date": "2018-03-02T16:41:12.091Z",
-      "code": 400,
-      "access_time": 1082
+      "code": null,
+      "access_time": null
     },
     {
       "date": "2018-03-02T19:30:10.854Z",
-      "code": 400,
-      "access_time": 1352
+      "code": null,
+      "access_time": null
     },
     {
       "date": "2018-03-05T10:52:36.388Z",
-      "code": 400,
-      "access_time": 2012
+      "code": null,
+      "access_time": null
     },
     {
       "date": "2018-03-05T13:43:21.345Z",
