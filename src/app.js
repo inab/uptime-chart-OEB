@@ -180,7 +180,7 @@ import printMe from './test';
     
     function loadChart (elems){
        
-        console.log(printMe);
+        console.log(elems);
         if(elems===undefined) {
             elems = document.getElementsByClassName("opebuptime");
         }
