@@ -1,4 +1,5 @@
-import * as d3 from 'd3';
+// import * as d3 from 'd3-format';
+// import {scaleLinear} from "d3-scale";
 import * as c3 from 'c3';
 import '../node_modules/c3/c3.css'
 import './app.css';
