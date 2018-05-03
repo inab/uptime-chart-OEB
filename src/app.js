@@ -1,10 +1,9 @@
-// import * as d3 from 'd3-format';
-// import {scaleLinear} from "d3-scale";
 import * as c3 from 'c3';
 import '../node_modules/c3/c3.css'
 import './app.css';
-import printMe from './test';
+
 //./node_modules/.bin/webpack-cli src/app.js --output=build/build.js --module-bind 'css=style-loader!css-loader' -d -w
+
 // function doEverything(){
     async function fetchUrl(url) {
         try {
@@ -207,6 +206,9 @@ import printMe from './test';
             }
         }
     }
-loadChart();    
-// }
-// export doEverything();
+    
+export{
+    loadChart
+}
+// loadChart();    
+

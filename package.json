@@ -1,8 +1,8 @@
 {
-  "name": "charts",
+  "name": "uptime",
   "version": "1.0.0",
   "description": "Chart widget",
-  "main": "app.js",
+  "main": "build/build.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
