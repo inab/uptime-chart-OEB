@@ -1,3 +1,4 @@
+import * as d3 from 'd3';
 import * as c3 from 'c3';
 import '../node_modules/c3/c3.css'
 import './app.css';
@@ -97,7 +98,8 @@ import './app.css';
                     
                     type : 'category',
                     tick: tickOptionsX,
-                    extent: [dates.length-15, dates.length],
+                    // extent: [dates.length-15, dates.length],
+                    extent: [5,10],
                     show: xaxis == 'true' ? 1:0,
                 },
                 
@@ -206,9 +208,7 @@ import './app.css';
             }
         }
     }
-    
+
 export{
     loadChart
 }
-// loadChart();    
-
