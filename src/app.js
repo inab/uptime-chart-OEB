@@ -8,7 +8,8 @@ import './app.css';
 // function doEverything(){
     async function fetchUrl(url) {
         try {
-            let request = await fetch(url);
+            // console.log("https://openebench.bsc.es/monitor/rest/homepage/"+url+"?limit=5")
+            let request = await fetch("https://openebench.bsc.es/monitor/rest/homepage/"+url+"?limit=5");
             let result = await request.text();
             return JSON.parse(result);
         }
@@ -51,7 +52,7 @@ import './app.css';
         }
         const tickOptionsY2 = {
             outer: false,
-            format: function(x) { console.log(x); return x % 1 === 0 ? x : ''; }
+            // format: function(x) { console.log(x); return x % 1 === 0 ? x : ''; }
         }
         // console.log(xaxis)
         const chart = c3.generate({
@@ -209,7 +210,7 @@ import './app.css';
         }
     }
 
-export{
-   loadChart
-}
-// loadChart();
+// export{
+//    loadChart
+// }
+loadChart();
