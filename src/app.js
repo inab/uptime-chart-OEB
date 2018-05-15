@@ -23,7 +23,8 @@ import './app.css';
     
         for(const x of uptime){
             // const date = x.date.split('.')[0].replace('T',' ').replace(/-/g, ".");
-            dates.push(x.date);
+            const date = x.date.split('.')[0].split('T')[0]
+            dates.push(date);
             code.push(x.code);
             ac_time.push(x.access_time);
         }
@@ -50,7 +51,7 @@ import './app.css';
         }
         const tickOptionsY2 = {
             outer: false,
-            // format: function(x) { console.log(x); return x % 1 === 0 ? x : ''; }
+            format: function(x) { console.log(x); return x % 1 === 0 ? x : ''; }
         }
         // console.log(xaxis)
         const chart = c3.generate({
@@ -95,11 +96,10 @@ import './app.css';
                 },
                 
                 x:{
-                    
                     type : 'category',
+                    // type : 'timeseries',
                     tick: tickOptionsX,
                     extent: [dates.length-5, dates.length],
-                    
                     show: xaxis == 'true' ? 1:0,
                 },
                 
@@ -209,6 +209,7 @@ import './app.css';
         }
     }
 
-export{
-   loadChart
-}
+// export{
+//    loadChart
+// }
+loadChart();
