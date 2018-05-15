@@ -210,7 +210,7 @@ import './app.css';
         }
     }
 
-// export{
-//    loadChart
-// }
+export{
+   loadChart
+}
 loadChart();
