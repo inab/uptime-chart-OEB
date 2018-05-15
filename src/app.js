@@ -98,8 +98,8 @@ import './app.css';
                     
                     type : 'category',
                     tick: tickOptionsX,
-                    // extent: [dates.length-15, dates.length],
-                    extent: [5,10],
+                    extent: [dates.length-5, dates.length],
+                    
                     show: xaxis == 'true' ? 1:0,
                 },
                 
@@ -210,5 +210,5 @@ import './app.css';
     }
 
 export{
-    loadChart
+   loadChart
 }
