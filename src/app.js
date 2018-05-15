@@ -209,7 +209,7 @@ import './app.css';
         }
     }
 
-// export{
-//    loadChart
-// }
-loadChart();
+export{
+   loadChart
+}
+// loadChart();
