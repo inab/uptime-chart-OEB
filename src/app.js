@@ -6,10 +6,13 @@ import './app.css';
 //./node_modules/.bin/webpack-cli src/app.js --output=build/build.js --module-bind 'css=style-loader!css-loader' -d -w
 
 // function doEverything(){
-    async function fetchUrl(url) {
+    async function fetchUrl(url, limit) {
         try {
+            if(!limit){
+                limit = 25;
+            }
             // console.log("https://openebench.bsc.es/monitor/rest/homepage/"+url+"?limit=5")
-            let request = await fetch("https://openebench.bsc.es/monitor/rest/homepage/"+url+"?limit=5");
+            let request = await fetch("https://openebench.bsc.es/monitor/rest/homepage/"+url+"?limit="+limit);
             let result = await request.text();
             return JSON.parse(result);
         }
@@ -23,8 +26,8 @@ import './app.css';
         const ac_time = [];
     
         for(const x of uptime){
-            // const date = x.date.split('.')[0].replace('T',' ').replace(/-/g, ".");
-            const date = x.date.split('.')[0].split('T')[0]
+            const date = x.date.split('.')[0].replace('T',' ').replace(/-/g, ".");
+            // const date = x.date.split('.')[0].split('T')[0]
             dates.push(date);
             code.push(x.code);
             ac_time.push(x.access_time);
@@ -80,13 +83,14 @@ import './app.css';
             },
             axis: {
                 y2:{
-                    show: true,
+                    show: false,
                     tick: tickOptionsY2,
                     inverted: false,
                     
+                    
                 },
                 y:{
-                    show: true,
+                    show: false,
                     tick: tickOptionsY,
                     min:0,
                     
@@ -102,6 +106,10 @@ import './app.css';
                     tick: tickOptionsX,
                     extent: [dates.length-5, dates.length],
                     show: xaxis == 'true' ? 1:0,
+                    padding:{
+                        right: 0.5,
+                        
+                    }
                 },
                 
             },
@@ -114,7 +122,7 @@ import './app.css';
                 },
             },
             zoom: {
-                enabled: true,
+                enabled: false,
                 rescale: false,
             },
             point:{
@@ -123,10 +131,9 @@ import './app.css';
             subchart: {
                 show: false,
             },
-            // padding:{
-            //     top:40,
-                
-            // },
+            padding:{
+                top:0,
+            },
             legend: {
                 position: 'top',
             },
@@ -183,7 +190,7 @@ import './app.css';
     
     function loadChart (elems){
        
-        console.log(elems);
+        // console.log(elems);
         if(elems===undefined) {
             elems = document.getElementsByClassName("opebuptime");
         }
@@ -195,10 +202,11 @@ import './app.css';
                 const xaxis = y.getAttribute('data-xaxis');
                 const c_w = y.getAttribute('data-w');
                 const c_h = y.getAttribute('data-h');
+                const limit = y.getAttribute('data-limit');
                 const div = document.createElement("div");
                 div.id = chartName;
                 y.appendChild(div)
-                const upitme = fetchUrl(chartUrl);
+                const upitme = fetchUrl(chartUrl,limit);
                 
                 upitme.then(function(result) {
                     genChartData(result,chartName,xaxis,c_w,c_h)
