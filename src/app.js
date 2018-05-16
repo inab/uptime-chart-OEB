@@ -8,16 +8,13 @@ import './app.css';
 // function doEverything(){
     async function fetchUrl(url, limit) {
         try {
-            if(!limit){
-                limit = 25;
-            }
-            // console.log("https://openebench.bsc.es/monitor/rest/homepage/"+url+"?limit=5")
+
             let request = await fetch("https://openebench.bsc.es/monitor/rest/homepage/"+url+"?limit="+limit);
             let result = await request.text();
             return JSON.parse(result);
         }
         catch (err) {
-            console.log(`Error: ${err.stack}`);
+            console.log(`Invalid Url Error: ${err.stack} `);
         }
     }
     function genChartData(uptime,chartName,xaxis,c_w,c_h){
@@ -199,21 +196,30 @@ import './app.css';
               
                 const chartName = y.getAttribute('data-id');
                 const chartUrl = y.getAttribute('data-url');
-                const xaxis = y.getAttribute('data-xaxis');
-                const c_w = y.getAttribute('data-w');
-                const c_h = y.getAttribute('data-h');
-                const limit = y.getAttribute('data-limit');
+                let xaxis = y.getAttribute('data-xaxis');
+                    if(!xaxis){
+                        xaxis="false";
+                    }
+                let c_w = y.getAttribute('data-w');
+                    if(c_w<200 || c_w==0 || !c_w){
+                        c_w=null;
+                    }
+                let c_h = y.getAttribute('data-h');
+                    if(c_h<200 || c_h==0 || !c_h){
+                        c_h=null;
+                    }
+                let limit = y.getAttribute('data-limit');
+                    if(!limit || limit < 5){
+                        limit = 5;
+                    }
                 const div = document.createElement("div");
                 div.id = chartName;
                 y.appendChild(div)
-                const upitme = fetchUrl(chartUrl,limit);
-                
-                upitme.then(function(result) {
-                    genChartData(result,chartName,xaxis,c_w,c_h)
-                    
-                });
+                const upitme = fetchUrl(chartUrl,limit).then(function(result) {
+                        genChartData(result,chartName,xaxis,c_w,c_h)
+                    });
             }catch(err){
-                console.log(err)
+                // console.log(err)
             }
         }
     }
