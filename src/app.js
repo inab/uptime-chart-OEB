@@ -17,7 +17,7 @@ import './app.css';
             console.log(`Invalid Url Error: ${err.stack} `);
         }
     }
-    function genChartData(uptime,chartName,xaxis,c_w,c_h){
+    function genChartData(uptime,chartName,xaxis,c_w,c_h ,chartTitle){
         const dates = [];
         const code = [];
         const ac_time = [];
@@ -32,12 +32,12 @@ import './app.css';
         dates.unshift('dates');
         code.unshift('Status');
         ac_time.unshift('Access Time');
-       populateChart(dates, code , ac_time , chartName,xaxis,c_w,c_h)
+       populateChart(dates, code , ac_time , chartName,xaxis,c_w,c_h,chartTitle)
     }
     
     
     
-    function populateChart(dates, code , ac_time,chartName,xaxis,c_w,c_h){
+    function populateChart(dates, code , ac_time,chartName,xaxis,c_w,c_h,chartTitle){
         
         const tickOptionsX = {
             format: '%m-%d',
@@ -77,6 +77,9 @@ import './app.css';
             size: {
                 height: Number(c_h),
                 width: Number(c_w),
+            },
+            title:{
+                text: chartTitle,
             },
             axis: {
                 y2:{
@@ -196,6 +199,10 @@ import './app.css';
               
                 const chartName = y.getAttribute('data-id');
                 const chartUrl = y.getAttribute('data-url');
+                let chartTitle = y.getAttribute('data-title');
+                    if(!chartTitle){
+                        chartTitle = '';
+                    }
                 let xaxis = y.getAttribute('data-xaxis');
                     if(!xaxis){
                         xaxis="false";
@@ -216,7 +223,7 @@ import './app.css';
                 div.id = chartName;
                 y.appendChild(div)
                 const upitme = fetchUrl(chartUrl,limit).then(function(result) {
-                        genChartData(result,chartName,xaxis,c_w,c_h)
+                        genChartData(result,chartName,xaxis,c_w,c_h,chartTitle)
                     });
             }catch(err){
                 // console.log(err)
