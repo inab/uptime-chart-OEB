@@ -1,5 +1,5 @@
 # UpTime
-This is widget to display the uptime of a tool
+This is a widget to display the uptime of a tool
 # How to
 All you need is the build file which you can download from build/build.js and tag it into your html
 eg: 
