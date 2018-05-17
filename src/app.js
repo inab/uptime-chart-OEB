@@ -226,7 +226,7 @@ import './app.css';
                         genChartData(result,chartName,xaxis,c_w,c_h,chartTitle)
                     });
             }catch(err){
-                // console.log(err)
+                console.log('Internat error :' +err)
             }
         }
     }
