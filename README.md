@@ -13,9 +13,6 @@ eg:
 </html>
 ```
 ### Params
-
-Dillinger uses a number of open source projects to work properly:
-
 * data-id : should be unique and start with a letter
 * data-url : from where the data is retrived
 * data-title : chart title
