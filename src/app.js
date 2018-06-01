@@ -17,7 +17,7 @@ import './app.css';
             console.log(`Invalid Url Error: ${err.stack} `);
         }
     }
-    function genChartData(uptime,chartName,xaxis,c_w,c_h ,chartTitle){
+    function genChartData(uptime,divid,xaxis,c_w,c_h ,chartTitle){
         const dates = [];
         const code = [];
         const ac_time = [];
@@ -32,12 +32,12 @@ import './app.css';
         dates.unshift('dates');
         code.unshift('Status');
         ac_time.unshift('Access Time');
-       populateChart(dates, code , ac_time , chartName,xaxis,c_w,c_h,chartTitle)
+       populateChart(dates, code , ac_time , divid,xaxis,c_w,c_h,chartTitle)
     }
     
     
     
-    function populateChart(dates, code , ac_time,chartName,xaxis,c_w,c_h,chartTitle){
+    function populateChart(dates, code , ac_time,divid,xaxis,c_w,c_h,chartTitle){
         
         const tickOptionsX = {
             format: '%m-%d',
@@ -83,7 +83,7 @@ import './app.css';
             },
             axis: {
                 y2:{
-                    show: false,
+                    show: true,
                     tick: tickOptionsY2,
                     inverted: false,
                     
@@ -137,7 +137,7 @@ import './app.css';
             legend: {
                 position: 'top',
             },
-            bindto: '#'+chartName,
+            bindto: '#'+divid,
             tooltip: {
                 contents: function (d, defaultTitleFormat, defaultValueFormat, color) {
                     // console.log(d)
@@ -149,6 +149,7 @@ import './app.css';
                         text, i, title, value, name, bgcolor, total=0;
                     
                     for (i = 0; i < d.length; i++) {
+                        
                         total = total+d[i].value;
                         if (! (d[i] && (d[i].value || d[i].value === 0))) { continue; }
     
@@ -173,7 +174,9 @@ import './app.css';
                                 text += "<td class='value'> Online </td>";
                             } else if(value == 400 ) {
                                 text += "<td class='value'> Offline </td>";
-                            } else {
+                            } else if (value == 408) {
+                                text += "<td class='value'> Offline </td>";
+                            }else {
                                 text += "<td class='value'>" + value +"</td>";
                             }
                             
@@ -194,10 +197,12 @@ import './app.css';
         if(elems===undefined) {
             elems = document.getElementsByClassName("opebuptime");
         }
+
+        let i = 0;
         for(let y of elems){
             try{
-              
-                const chartName = y.getAttribute('data-id');
+                i++;
+                const dataId = y.getAttribute('data-id');
                 const chartUrl = y.getAttribute('data-url');
                 let chartTitle = y.getAttribute('data-title');
                     if(!chartTitle){
@@ -220,10 +225,11 @@ import './app.css';
                         limit = 5;
                     }
                 const div = document.createElement("div");
-                div.id = chartName;
+                const divid = dataId+i;
+                div.id = divid;
                 y.appendChild(div)
                 const upitme = fetchUrl(chartUrl,limit).then(function(result) {
-                        genChartData(result,chartName,xaxis,c_w,c_h,chartTitle)
+                        genChartData(result,divid,xaxis,c_w,c_h,chartTitle)
                     });
             }catch(err){
                 console.log('Internat error :' +err)
