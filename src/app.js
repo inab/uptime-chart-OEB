@@ -83,7 +83,7 @@ import './app.css';
             },
             axis: {
                 y2:{
-                    show: true,
+                    show: false,
                     tick: tickOptionsY2,
                     inverted: false,
                     
@@ -212,6 +212,7 @@ import './app.css';
                     if(!xaxis){
                         xaxis="false";
                     }
+               
                 let c_w = y.getAttribute('data-w');
                     if(c_w<200 || c_w==0 || !c_w){
                         c_w=null;
