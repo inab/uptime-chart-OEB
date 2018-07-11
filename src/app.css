@@ -2,5 +2,9 @@
     stroke: rgba(0, 0, 0, 0.316);
 }
 .c3-line-Status, .c3-line-Access-Time {
-  stroke-width: .2em;
+  stroke-width: .02em;  
 }
+.c3-area{
+  opacity: 0.1;
+}
+
