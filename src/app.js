@@ -1,4 +1,4 @@
-// import * as d3 from 'd3';
+import * as d3 from 'd3';
 import * as c3 from 'c3';
 import '../node_modules/c3/c3.css'
 import './app.css';
@@ -30,7 +30,9 @@ import './app.css';
             // const date = x.date;
             let c;
             if(x.code == 408){
-                c = 203;
+                c = 199;
+            }else if (x.code == 202){
+                c = 200;
             }else{
                 c = x.code;
             }
@@ -89,20 +91,23 @@ import './app.css';
                     'Status': 'y2',
                 },
                 colors:{
-                    'Access Time':  function(d) { 
-                        if(d.value >= 160){ 
-                            return highResponseTime;
-                        }else{ 
-                            return lowResponseTime;
-                        }; 
+                    'Access Time':  function(d) {
+                        // if(d.value){
+                            if(d.value >= 160){ 
+                                return highResponseTime;
+                            }else{ 
+                                return lowResponseTime;
+                            };
+                        // }
                     },
                     'Status':  function(d) { 
-                        // console.log(d)
-                        if(d.value == 200 || d.value == 202 ){ 
-                            return online;
-                        }else{ 
-                            return offline;
-                        }; 
+                        // if(d.value){
+                            if(d.value == 200 ){ 
+                                return online;
+                            }else{ 
+                                return offline;
+                            }; 
+                        // }
                     },
                     // 'Status': '#588147'
                 },
@@ -204,7 +209,7 @@ import './app.css';
                     item: {
                         tile: {
                             width: 15,
-                            height: 4
+                            height: 2
                         },
                     },
                 show:false,
@@ -246,7 +251,7 @@ import './app.css';
                                 bgcolor = lowResponseTime
                             }; 
                         }else { 
-                            if(d[i].value == 200 || d[i].value == 202 ){ 
+                            if(d[i].value == 200 ){ 
                                 bgcolor = online 
                             }else{ 
                                 bgcolor = offline
@@ -281,13 +286,9 @@ import './app.css';
                         else{
                             if (value == 200){
                                 text += "<td class='value'> Online </td>";
-                            } else if(value == 202 ) {
-                                text += "<td class='value'> Online </td>";
-                            } else if(value == 203 ) {
+                            } else if(value == 199 ) {
                                 text += "<td class='value'> Offline </td>";
-                            } else if (value == 203) {
-                                text += "<td class='value'> Offline </td>";
-                            }else {
+                            } else {
                                 text += "<td class='value'>" + value +"</td>";
                             }
                             
@@ -299,7 +300,33 @@ import './app.css';
                 },  
             }
         });
+
+    //     d3.select('.container').insert('div', '.chart').attr('class', 'legend').selectAll('span')
+    //     .data(['Status', 'Access Time']).enter().append('span')
+    //     .attr('data-id', function (id) { return id; })
+    //     .html(function (id) { return id; })
+    //     .each(function (id) {
+    //     d3.select(this).style('background-color', chart.color(id));
+    //     })
+    //     .on('mouseover', function (id) {
+    //         chart.focus(id);
+    //     })
+    //     .on('mouseout', function (id) {
+    //         chart.revert();
+    //     })
+    //     .on('click', function (id) {
+    //         chart.toggle(id);
+    // });
     }
+
+
+
+
+
+
+
+
+
     
     function populateChart1(dates, code , ac_time,divid,xaxis,c_w,c_h,chartTitle){
         
