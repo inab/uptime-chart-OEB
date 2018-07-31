@@ -1,4 +1,3 @@
-import * as d3 from 'd3';
 import * as c3 from 'c3';
 import '../node_modules/c3/c3.css'
 import './app.css';
@@ -29,7 +28,7 @@ import './app.css';
             // console.log(Date.parse(x.date))
             // const date = x.date;
             let c;
-            if(x.code == 408){
+            if(x.code == 408 || x.code == 404 || x.code == 301 || x.code == 502){
                 c = 199;
             }else if (x.code == 202){
                 c = 200;
@@ -132,13 +131,16 @@ import './app.css';
                     tick: tickOptionsY2,
                     max: 4000,
                     inverted: false,
-                    
+                    padding:{
+                        left:0,
+                    },
                     
                 },
                 y:{
                     show: true,
                     tick: tickOptionsY,
                     min:0,
+
                     label: {
                         text: 'Access time in milliseconds',
                         position: 'outer-center'
@@ -153,6 +155,7 @@ import './app.css';
                     // inverted:false,
                     padding:{
                         bottom:0,
+                        
                     }
                 },
                 
