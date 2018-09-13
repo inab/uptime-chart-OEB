@@ -7,8 +7,12 @@ import './app.css';
 // function doEverything(){
     async function fetchUrl(url, limit) {
         try {
+            
+            const prod = "openebench"
+            const dev = "dev-openebench"
             // console.log("https://openebench.bsc.es/monitor/rest/homepage/"+url+"?limit="+limit)
-            let request = await fetch("https://openebench.bsc.es/monitor/rest/homepage/"+url+"?limit="+limit);
+
+            let request = await fetch("https:/"+dev+".bsc.es/monitor/rest/homepage/"+url+"?limit="+limit);
             let result = await request.text();
             return JSON.parse(result);
         }
@@ -28,7 +32,7 @@ import './app.css';
             // console.log(Date.parse(x.date))
             // const date = x.date;
             let c;
-            if(x.code == 408 || x.code == 404 || x.code == 301 || x.code == 502){
+            if(x.code == 408 || x.code == 404 || x.code == 301 || x.code == 302 || x.code == 502){
                 c = 199;
             }else if (x.code == 202){
                 c = 200;
@@ -154,9 +158,10 @@ import './app.css';
                     
                     // inverted:false,
                     padding:{
-                        bottom:0,
+                        bottom:11,
                         
-                    }
+                    },
+                    
                 },
                 
                 x:{
@@ -179,6 +184,7 @@ import './app.css';
                         right: 2,
                         
                     }
+                    
                 },
                 
             },
