@@ -12,7 +12,7 @@ import './app.css';
             const dev = "dev-openebench"
             // console.log("https://openebench.bsc.es/monitor/rest/homepage/"+url+"?limit="+limit)
 
-            let request = await fetch("https:/"+dev+".bsc.es/monitor/rest/homepage/"+url+"?limit="+limit);
+            let request = await fetch("https:/"+prod+".bsc.es/monitor/rest/homepage/"+url+"?limit="+limit);
             let result = await request.text();
             return JSON.parse(result);
         }
