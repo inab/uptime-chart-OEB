@@ -3,23 +3,27 @@ import '../node_modules/c3/c3.css'
 import './app.css';
 
 //./node_modules/.bin/webpack-cli src/app.js --output=build/build.js --module-bind 'css=style-loader!css-loader' -d -w
-
-// function doEverything(){
-    async function fetchUrl(url, limit) {
-        try {
-            
-            const prod = "openebench"
-            const dev = "dev-openebench"
-            // console.log("https://openebench.bsc.es/monitor/rest/homepage/"+url+"?limit="+limit)
-
-            let request = await fetch("https:/"+prod+".bsc.es/monitor/rest/homepage/"+url+"?limit="+limit);
-            let result = await request.text();
-            return JSON.parse(result);
-        }
-        catch (err) {
-            console.log(`Invalid Url Error: ${err.stack} `);
-        }
+/*
+async function wrapperFunc() {
+    try {
+        let r1 = await someFunc();
+        let r2 = await someFunc2(r1);
+        // now process r2
+        return someValue;     // this will be resolved value of the returned promise
+    } catch(e) {
+        console.log(e);
+        throw e;      // let caller know the promise rejected with this reason
     }
+}
+
+wrapperFunc().then(result => {
+    // got final result
+}).catch(err => {
+    // got error
+});
+*/
+// function doEverything(){
+ 
     function genChartData(uptime,divid,xaxis,c_w,c_h ,chartTitle){
         const dates = [];
         const code = [];
@@ -105,9 +109,9 @@ import './app.css';
                     },
                     'Status':  function(d) { 
                         // if(d.value){
-                            if(d.value == 200 ){ 
-                                return online;
-                            }else{ 
+                        if(d.value == 200 ){ 
+                            return online;
+                        }else{ 
                                 return offline;
                             }; 
                         // }
@@ -491,7 +495,7 @@ import './app.css';
         });
     }
     
-    function loadChart (elems){
+    async function loadChart (elems){
        
         // console.log(elems);
         if(elems===undefined) {
@@ -529,13 +533,26 @@ import './app.css';
                 const divid = dataId+i;
                 div.id = divid;
                 y.appendChild(div)
-                const upitme = fetchUrl(chartUrl,limit).then(function(result) {
-                        // console.log(result)
-                        genChartData(result,divid,xaxis,c_w,c_h,chartTitle)
-                    });
+                genChartData(await fetchUrl(chartUrl,limit),divid,xaxis,c_w,c_h,chartTitle)
+                
             }catch(err){
                 console.log('Internat error :' +err)
             }
+        }
+    }
+    async function fetchUrl(url, limit) {
+        try {
+
+            const production = "openebench"
+            const development = "dev-openebench"
+            // console.log("https://openebench.bsc.es/monitor/rest/homepage/"+url+"?limit="+limit)
+            let request = await fetch("https://"+production+".bsc.es/monitor/rest/homepage/"+url+"?limit="+limit)
+            let result = await request.json();
+            return result;
+
+        }
+        catch (err) {
+            console.log(`Invalid Url Error: ${err.stack} `);
         }
     }
 
@@ -543,3 +560,56 @@ export{
    loadChart
 }
 loadChart();
+
+
+
+
+
+// function get_data(url1, url2 ,divid){
+
+//     fetchUrl(url1, url2).then(results => {
+//       join_all_json(results[0].Dataset, results[1].Dataset ,divid);
+//     })
+   
+//    };
+   
+//    async function fetchUrl(url1, url2) {
+   
+//     try {
+//       let request1 = await fetch(url1);
+//       let result1 = await request1.text();
+//       let request2 = await fetch(url2);
+//       let result2 = await request2.text();
+//         return [JSON.parse(result1), JSON.parse(result2)];
+//       }
+//       catch (err) {
+//         console.log(`Invalid Url Error: ${err.stack}` );
+//       }
+   
+//    };
+   
+//    function join_all_json(array1, array2, divid){
+//     try{
+//       let full_json  = [];
+   
+//       for (let i = 0; i < array1.length; i++) {
+//           let jo = {};
+   
+//           jo['toolname'] = array1[i].depends_on.tool_id.split(':')[1];
+//           jo['x'] = parseFloat(Base64.decode(array1[i].datalink.uri.split(',')[1]));
+//           jo['y'] = parseFloat(Base64.decode(array2[i].datalink.uri.split(',')[1]));
+//           jo['e'] = 0;
+//           full_json.push(jo);
+//       }
+//       MAIN_DATA[divid] = full_json;
+//       // by default, no classification method is applied. it is the first item in the selection list
+//       var e = document.getElementById(divid + "_dropdown_list");
+//       let classification_type = e.options[e.selectedIndex].id;
+   
+//       createChart(full_json,divid, classification_type);
+//     }catch(err){
+//       console.log(`Invalid Url Error: ${err.stack}` );
+//     }
+   
+   
+//    };
