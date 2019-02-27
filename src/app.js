@@ -1,5 +1,5 @@
-import * as c3 from 'c3';
-import '../node_modules/c3/c3.css'
+// import * as c3 from 'c3';
+// import '../node_modules/c3/c3.css'
 import './app.css';
 
 //./node_modules/.bin/webpack-cli src/app.js --output=build/build.js --module-bind 'css=style-loader!css-loader' -d -w
