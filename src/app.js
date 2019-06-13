@@ -508,6 +508,7 @@ wrapperFunc().then(result => {
                 i++;
                 const dataId = y.getAttribute('data-id');
                 const chartUrl = y.getAttribute('data-url');
+                const mode = y.getAttribute('dev')
                 let chartTitle = y.getAttribute('data-title');
                     if(!chartTitle){
                         chartTitle = '';
@@ -533,20 +534,24 @@ wrapperFunc().then(result => {
                 const divid = dataId+i;
                 div.id = divid;
                 y.appendChild(div)
-                genChartData(await fetchUrl(chartUrl,limit),divid,xaxis,c_w,c_h,chartTitle)
+                genChartData(await fetchUrl(chartUrl,limit, mode),divid,xaxis,c_w,c_h,chartTitle)
                 
             }catch(err){
                 console.log('Internat error :' +err)
             }
         }
     }
-    async function fetchUrl(url, limit) {
+    async function fetchUrl(url, limit, mode) {
         try {
-
-            const production = "openebench"
-            const development = "dev-openebench"
+            let base_url;
+            if(mode != null){
+                base_url = "dev-openebench"
+            } else {
+                base_url = "openebench"
+            }
+            
             // console.log("https://openebench.bsc.es/monitor/rest/homepage/"+url+"?limit="+limit)
-            let request = await fetch("https://"+production+".bsc.es/monitor/rest/homepage/"+url+"?limit="+limit)
+            let request = await fetch("https://"+base_url+".bsc.es/monitor/rest/homepage/"+url+"?limit="+limit)
             let result = await request.json();
             return result;
 
