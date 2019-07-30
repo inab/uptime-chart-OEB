@@ -1,6 +1,9 @@
 const path = require('path');
 
 module.exports = {
+  externals: {
+        c3: 'c3',
+    },
     entry: './src/app.js',
     output: {
         path: path.resolve(__dirname, 'build'),
