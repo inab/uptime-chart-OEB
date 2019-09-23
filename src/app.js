@@ -58,8 +58,8 @@ function populateChart(dates, code, ac_time, divid, xaxis, c_w, c_h, chartTitle)
     const lowResponseTime = '#ff8214',
         highResponseTime = '#7C151D',
         noInfoCaptured = '#cccccc',
-        online = '#006b38',
-        offline = '#d1350f';
+        online = '#8ab803',
+        offline = '#cd5741';
     // console.log(xaxis)
     const chart = c3.generate({
         data: {
@@ -325,7 +325,11 @@ async function fetchUrl(url, limit, mode) {
         }
 
         // console.log("https://openebench.bsc.es/monitor/rest/homepage/"+url+"?limit="+limit)
-        let request = await fetch("https://" + base_url + ".bsc.es/monitor/rest/homepage/" + url + "?limit=" + limit)
+        var currentDate = Math.floor(new Date().getTime()/1000);
+        var startDate = date2-(limit*86400);
+
+        console.log(date2)
+        let request = await fetch("https://" + base_url + ".bsc.es/monitor/rest/homepage/" + url + "?date1="+startDate+"&date2="+ currentDate)
         let result = await request.json();
         return result;
 
