@@ -324,11 +324,8 @@ async function fetchUrl(url, limit, mode) {
             base_url = "openebench"
         }
 
-        // console.log("https://openebench.bsc.es/monitor/rest/homepage/"+url+"?limit="+limit)
         var currentDate = Math.floor(new Date().getTime()/1000);
-        var startDate = date2-(limit*86400);
-
-        console.log(date2)
+        var startDate = currentDate-(limit*86400);
         let request = await fetch("https://" + base_url + ".bsc.es/monitor/rest/homepage/" + url + "?date1="+startDate+"&date2="+ currentDate)
         let result = await request.json();
         return result;
