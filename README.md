@@ -4,7 +4,7 @@ This is a standalone widget to display the uptime of a tool at OpenEBench.
 
 ![Alt text](docs/images/screenshot.png 'Screenshot')
 
-Live demo available at : https://vsundesha.github.io/uptime-chart-OEB/
+Live demo available at : https://inab.github.io/uptime-chart-OEB/
 
 # How to
 
