@@ -8,6 +8,7 @@ This is a standalone widget to display the uptime of a tool at OpenEBench.
 Live demo available at : https://inab.github.io/uptime-chart-OEB/
 
 ## NPM Package 
+NPM Package `@inb/oeb-classification-table` published to: `https://www.npmjs.com/package/@inb/oeb-uptime-chart`.
 
 ## How to use
 
