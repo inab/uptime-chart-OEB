@@ -1,5 +1,5 @@
 {
-  "name": "@inb/openebench-uptime-chart",
+  "name": "@inb/oeb-uptime-chart",
   "version": "1.0.0",
   "description": "Standalone widget to display the uptime of a tool at OpenEBench",
   "main": "build/build.js",
