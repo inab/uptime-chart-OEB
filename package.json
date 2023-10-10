@@ -1,7 +1,7 @@
 {
-  "name": "uptime",
+  "name": "@inb/openebench-uptime-chart",
   "version": "1.0.0",
-  "description": "Chart widget",
+  "description": "Standalone widget to display the uptime of a tool at OpenEBench",
   "main": "build/build.js",
   "scripts": {
     "build": "npm install",
@@ -18,5 +18,16 @@
   "dependencies": {
     "webpack": "^4.29.5",
     "webpack-cli": "^3.2.3"
-  }
+  },
+  "keywords": [
+    "visualization",
+    "uptime",
+    "plot",
+    "benchmarking",
+    "openEBench"
+  ],
+  "bugs": {
+    "url": "https://github.com/inab/uptime-chart-OEB/issues"
+  },
+  "homepage": "https://github.com/inab/uptime-chart-OEB"
 }
